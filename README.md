@@ -58,11 +58,14 @@ to launch the server from the project directory:
 }
 ```
 
-The MCP tools reuse the academy service layer and can list students and teachers,
-create accounts and courses, enroll students, create assignments, and record
-attendance. MCP stdio tools run as the local OS user that launches the MCP
-client; use them only with trusted MCP clients and a trusted local project
-environment.
+MCP tools and resources are separated into `academy/mcp/tools.py` and
+`academy/mcp/resources.py`; `academy/mcp_server.py` initializes Django and
+starts the stdio transport. Tools can list students and teachers, create
+accounts and courses, enroll students, create assignments, and record
+attendance. Read-only JSON resources are available at `academy://students`,
+`academy://teachers`, `academy://courses`, and `academy://courses/{course_code}`.
+MCP stdio tools run as the local OS user that launches the MCP client; use them
+only with trusted MCP clients and a trusted local project environment.
 
 To run the MCP process directly, use:
 

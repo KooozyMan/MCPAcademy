@@ -73,6 +73,28 @@ def list_courses():
     ]
 
 
+def get_course_details(course_code):
+    course = Course.objects.select_related("teacher").get(code=course_code)
+    return {
+        "id": course.pk,
+        "title": course.title,
+        "code": course.code,
+        "description": course.description,
+        "teacher": course.teacher.get_full_name() or course.teacher.username,
+        "active": course.is_active,
+        "assignments": [
+            {
+                "id": assignment.pk,
+                "title": assignment.title,
+                "description": assignment.description,
+                "due_at": assignment.due_at.isoformat(),
+                "points": assignment.points,
+            }
+            for assignment in course.assignments.order_by("due_at")
+        ],
+    }
+
+
 @transaction.atomic
 def enroll_student(student_username, course_code):
     student = User.objects.get(username=student_username, role=User.Role.STUDENT)
